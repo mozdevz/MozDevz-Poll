@@ -1,0 +1,32 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && $uid === auth.uid"
+      }
+    },
+    "polls": {
+      ".indexOn": "dateCreated",
+      ".read": "auth!=null",
+      ".write": "auth!=null"
+    },
+    "questions": {
+      "$poll": {
+        ".read": "auth!=null",
+        ".write": "auth!=null",
+        ".indexOn": [
+          "votes"
+        ]
+      }
+    },
+    "results": {
+      "$poll":{
+        "$uid":{
+         ".read":"auth!=null && (root.child('users/'+auth.uid+'/type').val() ==='admin' || $uid === auth.uid)",
+         ".write":"auth!=null && (root.child('users/'+auth.uid+'/type').val() ==='admin' || $uid === auth.uid)"
+        }
+      }
+    }
+  }
+}

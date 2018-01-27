@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "MozDevz Poll",
+  "short_name": "Poll",
+  "version": "v1.0-beta",
+  "icons": [{
+    "src": "images/android-desktop.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }],
+
+  "default_locale": "pt",
+  "description": "Escolha o tema a ser abordado no próximo meetup da MozDevz",
+
+  "start_url": "/index.html",
+
+  "display": "standalone",
+
+  "background_color": "#616161",
+  "theme_color": "#F44336"
+}
