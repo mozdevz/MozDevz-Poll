@@ -35,13 +35,20 @@ initApp = function() {
             var photoURL = user.photoURL;
             var uid = user.uid;
 
-            //Add user to database
-            usersRef.child(uid).set({
-                email:email,
-                name:displayName,
-                photo:photoURL,
-                type:'user'
+            //Check if user exists in the database
+            usersRef.child(uid).once('value', function (snapshot) {
+                if(!snapshot.exists())
+                {
+                    //if the user doesn't exist, create it
+                    usersRef.child(uid).set({
+                        email:email,
+                        name:displayName,
+                        photo:photoURL,
+                        type:'user'
+                    });
+                }
             });
+
 
             pollsRef.orderByChild('dateCreated')
                 .limitToLast(1).on('value', function (snapshot) {
