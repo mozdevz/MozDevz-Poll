@@ -1,15 +1,17 @@
 {
   "rules": {
     "users": {
+      ".read":"auth!=null && root.child('users/'+auth.uid+'/type').val() ==='admin'",
+      ".indexOn":["name"],
       "$uid": {
         ".read": "auth != null",
-        ".write": "auth != null && $uid === auth.uid"
+        ".write": "auth != null && (root.child('users/'+auth.uid+'/type').val() ==='admin' || $uid === auth.uid)"
       }
     },
     "polls": {
-      ".indexOn": "dateCreated",
+      ".indexOn": ["dateCreated", "dateExpiration"],
       ".read": "auth!=null",
-      ".write": "auth!=null"
+      ".write": "auth!=null && root.child('users/'+auth.uid+'/type').val() ==='admin'"
     },
     "questions": {
       "$poll": {

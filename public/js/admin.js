@@ -14,34 +14,28 @@
  * limitations under the License.
  */
 
-
 initApp = function() {
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             // User is signed in.
-            window.location.replace('meetups.html');
-        } else {
-            // User is signed out.
-            // FirebaseUI config.
-            var uiConfig = {
-                signInSuccessUrl: 'meetups.html',
-                signInOptions: [
-                    // We're only using Google Sign-in
-                    firebase.auth.GoogleAuthProvider.PROVIDER_ID
-                ]
-            };
+            var uid = user.uid;
+            var userRef = firebase.database().ref('users').child(uid);
+            userRef.on('value', function(snapshot){
+                var user = snapshot.val();
+                document.getElementById('navBarName').innerHTML = user.name;
+                document.getElementById('navBarEmail').innerHTML = user.email;
+                document.getElementById('navBarPhoto').src = user.photo;
+                if(user.type != 'admin')
+                    window.location.assign('../index.html');
 
-            // Initialize the FirebaseUI Widget using Firebase.
-            var ui = new firebaseui.auth.AuthUI(firebase.auth());
-            // The start method will wait until the DOM is loaded.
-            ui.start('#firebaseui-auth-container', uiConfig);
+            });
+        } else {
+            window.location.assign('../index.html');
         }
     }, function(error) {
         console.log(error);
     });
 };
-
 window.addEventListener('load', function() {
     initApp()
 });
-
