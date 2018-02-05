@@ -35,13 +35,20 @@ initApp = function() {
             var photoURL = user.photoURL;
             var uid = user.uid;
 
-            //Add user to database
-            usersRef.child(uid).set({
-                email:email,
-                name:displayName,
-                photo:photoURL,
-                type:'user'
+            //Check if user exists in the database
+            usersRef.child(uid).once('value', function (snapshot) {
+                if(!snapshot.exists())
+                {
+                    //if the user doesn't exist, create it
+                    usersRef.child(uid).set({
+                        email:email,
+                        name:displayName,
+                        photo:photoURL,
+                        type:'user'
+                    });
+                }
             });
+
 
             pollsRef.orderByChild('dateCreated')
                 .limitToLast(1).on('value', function (snapshot) {
@@ -51,7 +58,7 @@ initApp = function() {
                         resultsRef.child(snap.key)
                             .child(uid).once('value', function(s){
                             if(s.exists() == true)
-                                confirmVote(snap.val().confirmation);
+                                confirmVote(snap.val().confirmation, snap.key);
                             else
                                 loadPoll(snap);
                         })
@@ -139,9 +146,8 @@ function loadPoll(snap){
             ' name="options" value="0" onclick="showTextField()"> ' +
             '<span class="mdl-radio__label" id="other">Outro:</span> ' +
             '</label><br>';
-        pollQuestions.innerHTML = pollQuestions. innerHTML + otherOption;
+        pollQuestions.innerHTML = pollQuestions.innerHTML + otherOption;
     });
-    //snap.child('questions')
 
 
     //Display the vote button
@@ -180,7 +186,7 @@ function loadPoll(snap){
                     votes:1
                 });
                 otherSuggestion.value = "";
-                confirmVote(poll.confirmation);
+                confirmVote(poll.confirmation, snap.key);
             }
         }
         else{
@@ -189,18 +195,43 @@ function loadPoll(snap){
                 .child(selectedOp).update({
                 votes:(votes[selectedOp]+1)
             });
-            confirmVote(poll.confirmation);
+            confirmVote(poll.confirmation, snap.key);
         }
     });
 }
 
-function confirmVote(confirmationMessage){
+function confirmVote(confirmationMessage, pollKey){
     pollTitle.innerHTML = "Voto registado!";
     pollDescription.innerHTML = confirmationMessage;
     btnVote.style.display = 'none';
-    pollQuestions.style.display = 'none';
     textField.style.display = 'none';
     progressBar.style.display = 'none';
+    questionsRef.child(pollKey).orderByChild('votes')
+        .on('value', function (snapshot) {
+            var totalVotes = 0;
+            var votes = [];
+            var i = 0;
+            pollQuestions.innerHTML = "";
+            snapshot.forEach(function(snapshot){
+                var question = snapshot.val();
+                totalVotes+= question.votes;
+                votes[i] = question.votes;
+                var item = '<h5 id="title'+i+'">'+question.question+'</h5>' +
+                    '<div class="votes-progress-background">' +
+                    '<div class="votes-progress" id="p'+i+'"></div>' +
+                    '</div><br>';
+                pollQuestions.innerHTML = item +pollQuestions.innerHTML;
+                i++;
+            });
+            for(var j=0; j<votes.length;j++)
+            {
+                var percentage=(votes[j]*100)/totalVotes;
+                percentage = percentage.toFixed(2);
+                document.getElementById('p'+j).style = 'width:'+percentage+'%';
+                document.getElementById('title'+j).innerHTML =
+                    document.getElementById('title'+j).innerHTML +' '+percentage+'%';
+            }
+    });
 }
 
 function showTextField()
