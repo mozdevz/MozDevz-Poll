@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "MozDevz Poll",
   "short_name": "Poll",
-  "version": "v1.0-beta",
+  "version": "v1.1-beta",
   "icons": [{
     "src": "images/android-desktop.png",
     "sizes": "192x192",
@@ -17,6 +17,6 @@
 
   "display": "standalone",
 
-  "background_color": "#616161",
+  "background_color": "#F44336",
   "theme_color": "#F44336"
 }

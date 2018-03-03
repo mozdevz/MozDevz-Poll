@@ -36,8 +36,8 @@ pollsRef.orderByChild("dateCreated").on('value', function (snapshot) {
         '<td>'+
             '<a class="mdl-button mdl-js-button mdl-button--icon"'+
             'href="poll.html#'+pollKey+'"><i class="material-icons">sort</i></a>'+
-        /*'<a class="mdl-button mdl-js-button mdl-button--icon"'+
-        'href="editPoll.html#'+pollKey+'"><i class="material-icons">edit</i></a>'+*/
+        '<a class="mdl-button mdl-js-button mdl-button--icon"'+
+        'href="editPoll.html#'+pollKey+'"><i class="material-icons">edit</i></a>'+
         '<a class="mdl-button mdl-js-button mdl-button--icon"'+
         'onClick="deletePoll(\''+pollKey+'\')"><i class="material-icons">delete</i></a>'+
         '</td>'+
