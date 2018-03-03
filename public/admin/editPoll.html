@@ -50,7 +50,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-red.min.css" />
     <link rel="stylesheet" href="../css/admin.css">
-
   </head>
   <body>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
@@ -87,18 +86,35 @@
              style="margin-top:32px;">
 
           <form>
-            <h4>Add/Remove Options</h4>
+            <h4>Edit Poll</h4>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="pollOption"
-                     name="pollOption">
-              <label class="mdl-textfield__label" for="pollOption">Name(Eg. Android, Laravel, Unity, ...)</label>
+              <input class="mdl-textfield__input" type="text" id="pollTitle" name="pollTitle">
+              <label class="mdl-textfield__label" for="pollTitle">Title</label>
             </div>
             <br>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <textarea class="mdl-textfield__input" rows= "4" id="pollDescription" ></textarea>
+              <label class="mdl-textfield__label" for="pollDescription">Description</label>
+            </div>
+            <br>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="number"
+                     id="pollExpiration" name="pollExpiration" value="7">
+              <label class="mdl-textfield__label" for="pollExpiration">Expires in (days)</label>
+            </div>
+            <br>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="pollConfirmation" name="pollConfirmation"
+                     value="Muito obrigado por votares. O teu contributo para a comunidade será levado em consideração!">
+              <label class="mdl-textfield__label" for="pollConfirmation">Confirmation message</label>
+            </div>
+            <br>
+            <input type="button" class="mdl-button mdl-js-button mdl-button--raised
+    				mdl-js-ripple-effect mdl-button--accent" value="Cancel" onclick="window.history.back()">
               <input type="button" class="mdl-button mdl-js-button mdl-button--raised
     				mdl-js-ripple-effect mdl-button--accent"
-                     value="Add" id="btnAdd">
-              <div class="tags-list" id="optionsList">
-              </div>
+                     value="Next" id="btnNext">
+              <br><br>
           </form>
         </div>
       </center>
@@ -111,6 +127,6 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
     <script src="../js/config.js"></script>
     <script src="../js/admin.js"></script>
-    <script src="newQuestions.js"></script>
+    <script src="editPoll.js"></script>
   </body>
 </html>
